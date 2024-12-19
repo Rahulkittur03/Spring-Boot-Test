@@ -39,10 +39,10 @@ public class UserEntryController {
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteUser(@RequestBody User user)
+    public ResponseEntity<?> deleteUser()
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userEntryRepo.deleteByuserName(authentication.getName());
-        return new ResponseEntity<>(user,HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
