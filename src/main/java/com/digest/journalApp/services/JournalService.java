@@ -43,11 +43,28 @@ public class JournalService {
     {
         return journalEntryRepo.findById(id);
     }
-    public void deletedById(ObjectId id, String userName)
+    @Transactional
+    public boolean deletedById(ObjectId id, String userName)
     {
-        User user = userService.findByUserName(userName);
-        user.getJournalEntries().removeIf(x -> x.getId().equals(id));
-        userService.saveUserEntry(user);
-        journalEntryRepo.deleteById(id);
+        try {
+            boolean removed=false;
+            User user = userService.findByUserName(userName);
+            removed=user.getJournalEntries().removeIf(x -> x.getId().equals(id));
+            if(removed)
+            {
+                userService.saveUserEntry(user);
+                journalEntryRepo.deleteById(id);
+                return removed;
+            }
+            else {
+                return removed;
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println(e);
+            throw new RuntimeException(e.getMessage());
+        }
+
     }
 }

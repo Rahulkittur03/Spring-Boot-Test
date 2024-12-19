@@ -1,8 +1,6 @@
 package com.digest.journalApp.services;
 
-import com.digest.journalApp.Entity.JournlEntry;
 import com.digest.journalApp.Entity.User;
-import com.digest.journalApp.Repository.JournalEntryRepo;
 import com.digest.journalApp.Repository.UserEntryRepo;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -23,13 +20,13 @@ public class UserService {
 
     private static final PasswordEncoder password =new BCryptPasswordEncoder();
 
-    public void saveUserEntry(User user)
+    public void saveNewUserEntry(User user)
     {
         user.setPassword(password.encode(user.getPassword()));
         user.setRoles(Arrays.asList("USER"));
         userEntryRepo.save(user);
     }
-    public void saveNewUserEntry(User user)
+    public void saveUserEntry(User user)
     {
         userEntryRepo.save(user);
     }

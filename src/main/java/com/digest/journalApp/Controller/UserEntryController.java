@@ -1,21 +1,14 @@
 package com.digest.journalApp.Controller;
 
-import com.digest.journalApp.Entity.JournlEntry;
 import com.digest.journalApp.Entity.User;
 import com.digest.journalApp.Repository.UserEntryRepo;
-import com.digest.journalApp.services.JournalService;
 import com.digest.journalApp.services.UserService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -34,7 +27,7 @@ public class UserEntryController {
         User userNDB = userService.findByUserName(authentication.getName());
             userNDB.setUserName(user.getUserName());
             userNDB.setPassword(user.getPassword());
-            userService.saveUserEntry(userNDB);
+            userService.saveNewUserEntry(userNDB);
         return new ResponseEntity<>(user,HttpStatus.NO_CONTENT);
     }
 

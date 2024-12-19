@@ -20,7 +20,7 @@ public class Public_Controller {
     {
         try
         {
-            userService.saveUserEntry(user);
+            userService.saveNewUserEntry(user);
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         catch (Exception e)
