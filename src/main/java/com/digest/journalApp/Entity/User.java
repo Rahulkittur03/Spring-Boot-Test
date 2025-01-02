@@ -1,5 +1,7 @@
 package com.digest.journalApp.Entity;
 
+import com.mongodb.connection.ProxySettings;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import org.bson.types.ObjectId;
@@ -13,7 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "User")
+
 @Data
+@Builder
 public class User {
 
     @Id
@@ -28,4 +32,5 @@ public class User {
     @DBRef
     private List<JournlEntry> journalEntries=new ArrayList<>();
     private List<String>roles;
+
 }

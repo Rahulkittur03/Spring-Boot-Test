@@ -4,6 +4,8 @@ import com.digest.journalApp.Entity.JournlEntry;
 import com.digest.journalApp.Entity.User;
 import com.digest.journalApp.Repository.JournalEntryRepo;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,14 +22,23 @@ public class JournalService {
     @Autowired
     private UserService userService;
 
+    private static final Logger logger= LoggerFactory.getLogger(JournalService.class);
 
     @Transactional
     public void saveJournalEntry(JournlEntry journlEntry, String userName)
     {
-        User user = userService.findByUserName(userName);
-        JournlEntry saved = journalEntryRepo.save(journlEntry);
-        user.getJournalEntries().add(saved);
-        userService.saveUserEntry(user);
+        try {
+            User user = userService.findByUserName(userName);
+            JournlEntry saved = journalEntryRepo.save(journlEntry);
+            user.getJournalEntries().add(saved);
+            userService.saveUserEntry(user);
+        }
+        catch (Exception e)
+        {
+            logger.info("Problem");
+            throw new RuntimeException(e.getMessage());
+        }
+
     }
     public void saveJournalEntry(JournlEntry journlEntry)
     {
@@ -62,7 +73,6 @@ public class JournalService {
         }
         catch (Exception e)
         {
-            System.out.println(e);
             throw new RuntimeException(e.getMessage());
         }
 
