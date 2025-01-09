@@ -23,11 +23,11 @@ public class UserAPI {
     @Autowired
     private QuotesService quotesService;
 
-    @GetMapping()
+    @GetMapping("/weather")
     public ResponseEntity<?> greeting()
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return new ResponseEntity<>("Hi "+authentication.getName()+ weatherService.getWeather("Delhi").getCurrent().getTemperature(),HttpStatus.OK);
+        return new ResponseEntity<>("Hi "+authentication.getName()+"Delhi Weather Temp :- "+ weatherService.getWeather("Delhi").getCurrent().getTemperature(),HttpStatus.OK);
     }
     @GetMapping("/quotes")
     public ResponseEntity<?> Quotes()

@@ -7,3 +7,9 @@ logging:
     net:
       digest:
         journalApp: INFO
+
+
+Api:
+  Key:
+    weather: 154ab042e329ac8f28661fc6eb1659f8
+    quotes: https://dummyjson.com/quotes/random
