@@ -1,9 +1,7 @@
 package com.digest.journalApp.Entity;
 
 import com.mongodb.connection.ProxySettings;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -18,6 +16,8 @@ import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -28,7 +28,8 @@ public class User {
     private String userName;
     @NonNull
     private String password;
-
+    private String email;
+    private String Sentiment;
     @DBRef
     private List<JournlEntry> journalEntries=new ArrayList<>();
     private List<String>roles;

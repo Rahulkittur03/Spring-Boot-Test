@@ -2,14 +2,12 @@ package com.digest.journalApp.services;
 
 import com.digest.journalApp.Entity.User;
 import com.digest.journalApp.Repository.UserEntryRepo;
+import com.digest.journalApp.Repository.UserReproImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -22,6 +20,9 @@ public class UserService {
 
     @Autowired
     private UserEntryRepo userEntryRepo;
+
+    @Autowired
+    private UserReproImpl userRepro;
 
 
     private static final PasswordEncoder password =new BCryptPasswordEncoder();
@@ -66,5 +67,13 @@ public class UserService {
     public User findByUserName(String name)
     {
         return userEntryRepo.findByuserName(name);
+    }
+    public List<User> findCustomUser(String name)
+    {
+        return userRepro.getSpec(name);
+    }
+    public List<User> getSentimentUser()
+    {
+        return userRepro.getUserForSA();
     }
 }

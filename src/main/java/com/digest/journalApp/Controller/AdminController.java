@@ -35,4 +35,25 @@ public class AdminController {
         userService.saveAdmin(user);
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
+
+    @GetMapping("/Spec/{name}")
+    public ResponseEntity<?> getUserByUserName(@PathVariable String name)
+    {
+        List<User> customUser = userService.findCustomUser(name);
+        if(customUser.isEmpty())
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(customUser,HttpStatus.OK);
+    }
+
+    @GetMapping("/Spec")
+    public ResponseEntity<?>getSentiUser(){
+        List<User> sentimentUser = userService.getSentimentUser();
+        if (sentimentUser.isEmpty())
+        {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(sentimentUser,HttpStatus.OK);
+    }
 }
