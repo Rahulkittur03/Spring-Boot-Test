@@ -2,6 +2,20 @@ spring:
   profiles:
     active: dev
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: rahulkitt02@gmail.com
+    password: socz iwad ncws rbem
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+
 logging:
   level:
     net:
