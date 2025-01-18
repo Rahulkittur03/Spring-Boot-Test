@@ -1,5 +1,6 @@
 package com.digest.journalApp.Entity;
 
+import com.digest.journalApp.enums.Sentiment;
 import com.mongodb.connection.ProxySettings;
 import lombok.*;
 import org.bson.types.ObjectId;
@@ -29,7 +30,7 @@ public class User {
     @NonNull
     private String password;
     private String email;
-    private String Sentiment;
+
     @DBRef
     private List<JournlEntry> journalEntries=new ArrayList<>();
     private List<String>roles;

@@ -5,16 +5,17 @@ import com.digest.journalApp.Cache.AppCache;
 import com.digest.journalApp.Entity.JournlEntry;
 import com.digest.journalApp.Entity.User;
 import com.digest.journalApp.Repository.UserReproImpl;
+import com.digest.journalApp.enums.Sentiment;
 import com.digest.journalApp.services.EmailService;
-import com.digest.journalApp.services.SentimentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Component
 public class UserScheduler {
@@ -23,8 +24,7 @@ public class UserScheduler {
     private EmailService emailService;
     @Autowired
     private UserReproImpl userRepro;
-    @Autowired
-    private SentimentService sentimentService;
+
     @Autowired
     private AppCache appCache;
 
@@ -35,15 +35,42 @@ public class UserScheduler {
         for(User user:users)
         {
             List<JournlEntry> journalEntries = user.getJournalEntries();
-            List<String> filterList = journalEntries.stream().filter(x -> x.getDate().isAfter(LocalDateTime.now().minus(7, ChronoUnit.DAYS))).map(x->x.getContent()).toList();
-            String entry = String.join(" ", filterList);
-            String sentiment = sentimentService.getSentiment(entry);
-            //emailService.sendMail(user.getEmail(),"Sentimental of User",sentiment);
-            System.out.println("Sentiment of the user"+sentiment+entry);
+            List<Sentiment> sentiments = journalEntries.stream().filter(x -> x.getDate().isAfter(LocalDateTime.now().minus(7, ChronoUnit.DAYS))).map(x->x.getSentiment()).toList();
+
+            Map<Sentiment,Integer> SentimentCount=new HashMap<>();
+            {
+                for(Sentiment sentiment : sentiments)
+                {
+                    if(sentiment!=null)
+                    {
+                        SentimentCount.put(sentiment,SentimentCount.getOrDefault(sentiment,0)+1);
+                    }
+                }
+                Sentiment mostFrequentSentiment=null;
+                int maxCount=0;
+                for(Map.Entry<Sentiment,Integer> entry:SentimentCount.entrySet())
+                {
+                    if(entry.getValue()>maxCount)
+                    {
+                        maxCount=entry.getValue();
+                        mostFrequentSentiment=entry.getKey();
+                    }
+                }
+                if(mostFrequentSentiment!=null)
+                {
+                    emailService.sendMail(user.getEmail(),"Sentiment for last 7 days",mostFrequentSentiment.toString());
+                }
+
+            }
+
+
+
+
+
         }
 
     }
-    @Scheduled(cron = "0 0/10 * 1/1 * ? *")
+    //@Scheduled(cron = "0 0/10 * 1/1 *")
     public void AppCache()
     {
         appCache.init();

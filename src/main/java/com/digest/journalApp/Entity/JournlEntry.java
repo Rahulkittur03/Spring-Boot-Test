@@ -1,5 +1,6 @@
 package com.digest.journalApp.Entity;
 
+import com.digest.journalApp.enums.Sentiment;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,6 @@ public class JournlEntry {
 
     private String content;
     private LocalDateTime date;
+    private Sentiment sentiment;
 
 }
